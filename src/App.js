@@ -1,23 +1,28 @@
 import './App.css';
-import logo from './logo.svg';
+import { useState } from 'react';
+import AddGuest from './AddGuest';
 
 export default function App() {
+  const [guests, setGuests] = useState([]);
+
+  const guestForm = {
+    id: null,
+    firstName: '',
+    lastName: '',
+  };
+
+  function addGuest(guest) {
+    guest.id = guests.length + 1;
+    setGuests([...guests, guest]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" data-test-id="guest">
+      <h1>GUEST LIST</h1>
+      <div>
+        <h2>Add new Guest</h2>
+        <AddGuest addGuest={addGuest} />
+      </div>
     </div>
   );
 }
