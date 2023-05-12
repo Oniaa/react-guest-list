@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 export default function AddGuest(props) {
-  const guestForm = {
+  /* const guestForm = {
     id: null,
     firstName: '',
     lastName: '',
-  };
+  }; */
 
   const baseUrl = 'http://localhost:4000';
 

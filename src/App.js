@@ -3,7 +3,7 @@ import { useState } from 'react';
 import AddGuest from './AddGuest';
 
 export default function App() {
-  const [guests, setGuests] = useState([]);
+  /* const [guests, setGuests] = useState([]);
 
   const guestForm = {
     id: null,
@@ -14,7 +14,7 @@ export default function App() {
   function addGuest(guest) {
     guest.id = guests.length + 1;
     setGuests([...guests, guest]);
-  }
+  } */
 
   return (
     <div className="App" data-test-id="guest">
