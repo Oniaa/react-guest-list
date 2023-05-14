@@ -24,6 +24,12 @@ export default function App() {
     }
   }
 
+  function handleRemoveGuest(index) {
+    const newGuest = [...guests];
+    newGuest.splice(index, 1);
+    setGuests(newGuest);
+  }
+
   function handleAttendingChange(index, attending) {
     const newCheckboxes = [...guests];
     newCheckboxes[index].attending = attending;
@@ -72,15 +78,7 @@ export default function App() {
                   handleAttendingChange(index, event.currentTarget.checked)
                 }
               />
-              <button
-                onClick={() => {
-                  const newGuest = [...guests];
-                  newGuest.length = newGuest.length - 1;
-                  setGuests(newGuest);
-                }}
-              >
-                Remove
-              </button>
+              <button onClick={() => handleRemoveGuest(index)}>Remove</button>
             </div>
           ))}
         </div>
