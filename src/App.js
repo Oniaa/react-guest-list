@@ -24,16 +24,6 @@ export default function App() {
     }
   }
 
-  /*  const guestForm = {
-    id: null,
-    firstName: '',
-    lastName: '',
-  };  */
-
-  /*  function addGuest(guest) {
-    setGuests([...guests, guest]);
-  } */
-
   return (
     <div className="App" data-test-id="guest">
       <h1>GUEST LIST</h1>
@@ -63,9 +53,20 @@ export default function App() {
         <div>
           <h2>Guests</h2>
           {guests.map((guest) => (
-            <p key={guest}>
-              {guest.firstName} {guest.lastName}
-            </p>
+            <div key={`guest-profile-${guest}`}>
+              <p>
+                {guest.firstName} {guest.lastName}
+              </p>
+              <button
+                onClick={() => {
+                  const newGuest = [...guests];
+                  newGuest.length = newGuest.length - 1;
+                  setGuests(newGuest);
+                }}
+              >
+                Remove
+              </button>
+            </div>
           ))}
         </div>
       )}
