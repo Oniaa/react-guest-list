@@ -18,10 +18,16 @@ export default function App() {
   function handleSubmit(event) {
     event.preventDefault();
     if (firstName !== '' && lastName !== '') {
-      setGuests([...guests, { firstName, lastName }]);
+      setGuests([...guests, { firstName, lastName, attending: false }]);
       setFirstName('');
       setLastName('');
     }
+  }
+
+  function handleAttendingChange(index, attending) {
+    const newCheckboxes = [...guests];
+    newCheckboxes[index].attending = attending;
+    setGuests(newCheckboxes);
   }
 
   return (
@@ -52,11 +58,20 @@ export default function App() {
       {guests.length > 0 && (
         <div>
           <h2>Guests</h2>
-          {guests.map((guest) => (
+          {guests.map((guest, index) => (
             <div key={`guest-profile-${guest}`}>
               <p>
-                {guest.firstName} {guest.lastName}
+                {guest.firstName} {guest.lastName},{' '}
+                {guest.attending ? 'attending' : 'not attending'}
               </p>
+              <input
+                aria-label="attending"
+                checked={guest.attending}
+                type="checkbox"
+                onChange={(event) =>
+                  handleAttendingChange(index, event.currentTarget.checked)
+                }
+              />
               <button
                 onClick={() => {
                   const newGuest = [...guests];
