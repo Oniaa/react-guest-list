@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 // import AddGuest from './AddGuest';
 
@@ -7,6 +7,8 @@ export default function App() {
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  const lastNameInputRef = useRef(null);
 
   function handleFirstNameChange(event) {
     setFirstName(event.currentTarget.value);
@@ -36,6 +38,13 @@ export default function App() {
     setGuests(newCheckboxes);
   }
 
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      lastNameInputRef.current.focus();
+    }
+  }
+
   return (
     <div className="App" data-test-id="guest">
       <h1>GUEST LIST</h1>
@@ -47,6 +56,7 @@ export default function App() {
               name="firstName"
               value={firstName}
               onChange={handleFirstNameChange}
+              onKeyDown={handleKeyPress}
             />
           </label>
           <label>
@@ -55,6 +65,7 @@ export default function App() {
               name="lastName"
               value={lastName}
               onChange={handleLastNameChange}
+              ref={lastNameInputRef}
             />
           </label>
           <button>Add</button>
