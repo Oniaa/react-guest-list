@@ -1,40 +1,47 @@
-import React, { useState } from 'react';
+/* import React, { useState } from 'react';
 
-export default function AddGuest(props) {
-  /* const guestForm = {
+export default function AddGuest() {
+   const guestForm = {
     id: null,
     firstName: '',
     lastName: '',
-  }; */
+  };
 
   const baseUrl = 'http://localhost:4000';
 
-  const [guest, setGuest] = useState('guestForm');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [guest, setGuest] = useState([
+    {
+      firstName: '',
+      lastName: '',
+    },
+  ]);
 
-  /* async function addNewGuest() {
+  async function addNewGuest() {
     const response = await fetch(`${baseUrl}/guests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ firstName: '', lastName: '' }),
+      body: JSON.stringify({ firstName: firstName, lastName: lastName }),
     });
     const createdGuest = await response.json();
 
     setGuest([...guest, createdGuest.results]);
-  } */
+  }
 
-  function handleInputChange(event) {
+   function handleInputChange(event) {
     const { name, value } = event.currentTarget.value;
 
     setGuest({ ...guest, [name]: value });
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    await addNewGuest();
 
-    props.addGuest(guest);
-    setGuest(guestForm);
+    // setGuest(guestForm);
     // await addNewGuest();
   }
 
@@ -45,7 +52,7 @@ export default function AddGuest(props) {
         <input
           name="firstName"
           value={guest.firstName}
-          onChange={handleInputChange}
+          onChange={(event) => setFirstName(event.currentTarget.value)}
         />
       </label>
       <label>
@@ -53,10 +60,12 @@ export default function AddGuest(props) {
         <input
           name="lastName"
           value={guest.lastName}
-          onChange={handleInputChange}
+          onChange={(event) => setLastName(event.currentTarget.value)}
         />
       </label>
       <button>Add</button>
     </form>
   );
 }
+
+ */
