@@ -61,3 +61,39 @@
     font-size: 1.2rem;
   }
 }
+
+@media (max-width: 600px) {
+  h1 {
+    margin: 24px auto 0 auto;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .formContainer {
+    button {
+      width: 50%;
+    }
+
+    .formRow {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+
+  .listContainer {
+    flex-direction: column;
+    gap: 6px;
+
+    p {
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+
+    button {
+      font-size: 1rem;
+    }
+  }
+}
