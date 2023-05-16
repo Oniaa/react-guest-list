@@ -1,5 +1,7 @@
 import './App.css';
 import { useEffect, useState } from 'react';
+import { AiOutlineDelete } from 'react-icons/ai';
+import styles from './App.module.scss';
 
 export default function App() {
   const [guests, setGuests] = useState([]);
@@ -101,11 +103,12 @@ export default function App() {
   }
 
   return (
-    <div className="App" data-test-id="guest">
-      <h1>GUEST LIST</h1>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <label>
+    <div className={styles.container} data-test-id="guest">
+      <h1>CREATE YOUR OWN GUEST LIST</h1>
+      <h2>ADD GUEST</h2>
+      <form onSubmit={handleSubmit} className={styles.formContainer}>
+        <div className={styles.formRow}>
+          <label className={styles.label}>
             First name
             <input
               name="firstName"
@@ -113,7 +116,8 @@ export default function App() {
               onChange={handleFirstNameChange}
             />
           </label>
-          <label>
+
+          <label className={styles.label}>
             Last name
             <input
               name="lastName"
@@ -121,36 +125,46 @@ export default function App() {
               onChange={handleLastNameChange}
             />
           </label>
-          <button>Add</button>
-        </form>
-        <br />
-      </div>
+        </div>
+        <button>Add</button>
+      </form>
+      <br />
       {guests.length > 0 && (
-        <div>
-          <h2>Guests</h2>
-          {guests.map((guest) => (
-            <div key={`guest-profile-${guest.id}`}>
-              <p>
-                {guest.firstName} {guest.lastName},{' '}
-                {guest.attending ? 'attending' : 'not attending'}
-              </p>
-              <input
-                aria-label="attending"
-                checked={guest.attending}
-                type="checkbox"
-                onChange={(event) =>
-                  handleAttendingStatus(
-                    guest.id,
-                    guest.attending,
-                    event.currentTarget.checked,
-                  )
-                }
-              />
-              <button onClick={() => handleRemoveGuest(guest.id)}>
-                Remove
-              </button>
-            </div>
-          ))}
+        <div className={styles.guestListContainer}>
+          <h2>Guest List</h2>
+          <div className={styles.guestList}>
+            {guests.map((guest) => (
+              <div
+                className={styles.listContainer}
+                key={`guest-profile-${guest.id}`}
+              >
+                <p>
+                  {guest.firstName} {guest.lastName},{' '}
+                  {guest.attending ? 'attending' : 'not attending'}
+                </p>
+                <div>
+                  <input
+                    aria-label="attending"
+                    checked={guest.attending}
+                    type="checkbox"
+                    onChange={(event) =>
+                      handleAttendingStatus(
+                        guest.id,
+                        guest.attending,
+                        event.currentTarget.checked,
+                      )
+                    }
+                  />
+                  <button
+                    aria-label={`Remove ${guest.firstName}${guest.lastName}`}
+                    onClick={() => handleRemoveGuest(guest.id)}
+                  >
+                    <AiOutlineDelete />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
