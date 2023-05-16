@@ -1,7 +1,5 @@
 import './App.css';
-import { useRef, useState } from 'react';
-
-// import AddGuest from './AddGuest';
+import { useEffect, useState } from 'react';
 
 export default function App() {
   const [guests, setGuests] = useState([]);
@@ -10,21 +8,36 @@ export default function App() {
 
   const baseUrl = 'http://localhost:4000';
 
-  const lastNameInputRef = useRef(null);
+  useEffect(() => {
+    const fetchGuests = async () => {
+      const response = await fetch(`${baseUrl}/guests`);
+      const allGuests = await response.json();
+      setGuests(allGuests);
+    };
 
-  async function newGuest() {
+    fetchGuests().catch((error) => {
+      console.error(error);
+    });
+  }, []);
+
+  /*  async function fetchGuests() {
+    const response = await fetch(`${baseUrl}/guests`);
+    const allGuests = await response.json();
+    setGuests(allGuests);
+  } */
+
+  async function addNewGuest() {
     const response = await fetch(`${baseUrl}/guests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        firstName: guests.firstName,
-        lastName: guests.lastName,
-      }),
+      body: JSON.stringify({ firstName: firstName, lastName: lastName }),
     });
     const createdGuest = await response.json();
+    console.log(createdGuest);
     setGuests([...guests, createdGuest]);
+    console.log(guests);
   }
 
   function handleFirstNameChange(event) {
@@ -34,32 +47,56 @@ export default function App() {
     setLastName(event.currentTarget.value);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (firstName !== '' && lastName !== '') {
-      setGuests([...guests, { firstName, lastName, attending: false }]);
+    if (firstName.trim() !== '' && lastName.trim() !== '') {
+      /* const newGuest = {
+        firstName: firstName,
+        lastName: lastName,
+      }; */
+      // setGuests([...guests, newGuest]);
+      await addNewGuest();
+      // await addNewGuest([...guests, guests]);
+      // setGuests([...guests, newGuest]);
       setFirstName('');
       setLastName('');
     }
   }
 
-  function handleRemoveGuest(index) {
+  /*  async function deleteGuest() {
+    const response = await fetch(`${baseUrl}/guests/1`, { method: 'DELETE' });
+    const deletedGuest = await response.json();
+    setGuests([...guests, deletedGuest]);
+  } */
+
+  /*  async function deleteGuest() {
+    const response = await fetch(`${baseUrl}/guests/1`, { method: 'DELETE' });
+    const deletedGuest = await response.json();
+    setGuests([...guests, deletedGuest]);
+  }
+  deleteGuest().catch((error) => {
+    console.error(error);
+  });  */
+
+  /* async function handleRemoveGuest(index) {
+    const response = await fetch(`${baseUrl}/guests/1`, { method: 'DELETE' });
+    const deletedGuest = await response.json();
+    setGuests([...guests, deletedGuest]);
     const newGuest = [...guests];
     newGuest.splice(index, 1);
     setGuests(newGuest);
-  }
+  } */
+
+  /*  function handleRemoveGuest(index) {
+    const newGuest = [...guests];
+    newGuest.splice(index, 1);
+    setGuests(newGuest);
+  }  */
 
   function handleAttendingChange(index, attending) {
     const newCheckboxes = [...guests];
     newCheckboxes[index].attending = attending;
     setGuests(newCheckboxes);
-  }
-
-  function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      lastNameInputRef.current.focus();
-    }
   }
 
   return (
@@ -73,7 +110,6 @@ export default function App() {
               name="firstName"
               value={firstName}
               onChange={handleFirstNameChange}
-              onKeyDown={handleKeyPress}
             />
           </label>
           <label>
@@ -82,7 +118,6 @@ export default function App() {
               name="lastName"
               value={lastName}
               onChange={handleLastNameChange}
-              ref={lastNameInputRef}
             />
           </label>
           <button>Add</button>
@@ -93,7 +128,7 @@ export default function App() {
         <div>
           <h2>Guests</h2>
           {guests.map((guest, index) => (
-            <div key={`guest-profile-${guest}`}>
+            <div key={`guest-profile-${guest.id}`}>
               <p>
                 {guest.firstName} {guest.lastName},{' '}
                 {guest.attending ? 'attending' : 'not attending'}
