@@ -29,9 +29,7 @@ export default function App() {
       body: JSON.stringify({ firstName: firstName, lastName: lastName }),
     });
     const createdGuest = await response.json();
-    console.log(createdGuest);
     setGuests([...guests, createdGuest]);
-    console.log(guests);
   }
 
   function handleFirstNameChange(event) {
@@ -67,12 +65,29 @@ export default function App() {
     });
   }
 
-  function handleAttendingChange(index, attending) {
+  async function handleAttendingStatus(id, attending) {
+    const response = await fetch(`${baseUrl}/guests/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ attending: !attending }),
+    });
+    const updatedGuest = await response.json();
+    const currentGuestStatus = [...guests];
+    const newGuestStatus = currentGuestStatus.filter(
+      (guest) => guest.id !== updatedGuest.id,
+    );
+    setGuests([...newGuestStatus, updatedGuest]);
+    console.log(guests);
+  }
+
+  /* function handleAttendingStatus(index, attending) {
     const newCheckboxes = [...guests];
     newCheckboxes[index].attending = attending;
     setGuests(newCheckboxes);
   }
-
+ */
   return (
     <div className="App" data-test-id="guest">
       <h1>GUEST LIST</h1>
@@ -101,7 +116,7 @@ export default function App() {
       {guests.length > 0 && (
         <div>
           <h2>Guests</h2>
-          {guests.map((guest, index) => (
+          {guests.map((guest) => (
             <div key={`guest-profile-${guest.id}`}>
               <p>
                 {guest.firstName} {guest.lastName},{' '}
@@ -111,7 +126,13 @@ export default function App() {
                 aria-label="attending"
                 checked={guest.attending}
                 type="checkbox"
-                onChange={(event) => (index, event.currentTarget.checked)}
+                onChange={(event) =>
+                  handleAttendingStatus(
+                    guest.id,
+                    guest.attending,
+                    event.currentTarget.checked,
+                  )
+                }
               />
               <button onClick={() => handleRemoveGuest(guest.id)}>
                 Remove
