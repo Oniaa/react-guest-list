@@ -9,22 +9,16 @@ export default function App() {
   const baseUrl = 'http://localhost:4000';
 
   useEffect(() => {
-    const fetchGuests = async () => {
+    async function fetchGuests() {
       const response = await fetch(`${baseUrl}/guests`);
       const allGuests = await response.json();
       setGuests(allGuests);
-    };
+    }
 
     fetchGuests().catch((error) => {
       console.error(error);
     });
   }, []);
-
-  /*  async function fetchGuests() {
-    const response = await fetch(`${baseUrl}/guests`);
-    const allGuests = await response.json();
-    setGuests(allGuests);
-  } */
 
   async function addNewGuest() {
     const response = await fetch(`${baseUrl}/guests`, {
@@ -50,48 +44,28 @@ export default function App() {
   async function handleSubmit(event) {
     event.preventDefault();
     if (firstName.trim() !== '' && lastName.trim() !== '') {
-      /* const newGuest = {
-        firstName: firstName,
-        lastName: lastName,
-      }; */
-      // setGuests([...guests, newGuest]);
       await addNewGuest();
-      // await addNewGuest([...guests, guests]);
-      // setGuests([...guests, newGuest]);
       setFirstName('');
       setLastName('');
     }
   }
 
-  /*  async function deleteGuest() {
-    const response = await fetch(`${baseUrl}/guests/1`, { method: 'DELETE' });
-    const deletedGuest = await response.json();
-    setGuests([...guests, deletedGuest]);
-  } */
-
-  /*  async function deleteGuest() {
-    const response = await fetch(`${baseUrl}/guests/1`, { method: 'DELETE' });
-    const deletedGuest = await response.json();
-    setGuests([...guests, deletedGuest]);
+  function handleRemoveGuest(id) {
+    async function deleteGuest() {
+      const response = await fetch(`${baseUrl}/guests/${id}`, {
+        method: 'DELETE',
+      });
+      const deletedGuest = await response.json();
+      const currentGuest = [...guests];
+      const newGuest = currentGuest.filter(
+        (guest) => guest.id !== deletedGuest.id,
+      );
+      setGuests(newGuest);
+    }
+    deleteGuest().catch((error) => {
+      console.error(error);
+    });
   }
-  deleteGuest().catch((error) => {
-    console.error(error);
-  });  */
-
-  /* async function handleRemoveGuest(index) {
-    const response = await fetch(`${baseUrl}/guests/1`, { method: 'DELETE' });
-    const deletedGuest = await response.json();
-    setGuests([...guests, deletedGuest]);
-    const newGuest = [...guests];
-    newGuest.splice(index, 1);
-    setGuests(newGuest);
-  } */
-
-  /*  function handleRemoveGuest(index) {
-    const newGuest = [...guests];
-    newGuest.splice(index, 1);
-    setGuests(newGuest);
-  }  */
 
   function handleAttendingChange(index, attending) {
     const newCheckboxes = [...guests];
@@ -137,11 +111,11 @@ export default function App() {
                 aria-label="attending"
                 checked={guest.attending}
                 type="checkbox"
-                onChange={(event) =>
-                  handleAttendingChange(index, event.currentTarget.checked)
-                }
+                onChange={(event) => (index, event.currentTarget.checked)}
               />
-              <button onClick={() => handleRemoveGuest(index)}>Remove</button>
+              <button onClick={() => handleRemoveGuest(guest.id)}>
+                Remove
+              </button>
             </div>
           ))}
         </div>
