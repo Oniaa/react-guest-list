@@ -5,6 +5,7 @@ export default function App() {
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const baseUrl = 'http://localhost:4000';
 
@@ -13,6 +14,7 @@ export default function App() {
       const response = await fetch(`${baseUrl}/guests`);
       const allGuests = await response.json();
       setGuests(allGuests);
+      setLoading(false);
     }
 
     fetchGuests().catch((error) => {
@@ -82,12 +84,10 @@ export default function App() {
     console.log(guests);
   }
 
-  /* function handleAttendingStatus(index, attending) {
-    const newCheckboxes = [...guests];
-    newCheckboxes[index].attending = attending;
-    setGuests(newCheckboxes);
+  if (loading) {
+    return <div>Loading...</div>;
   }
- */
+
   return (
     <div className="App" data-test-id="guest">
       <h1>GUEST LIST</h1>
