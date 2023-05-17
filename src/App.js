@@ -99,7 +99,21 @@ export default function App() {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <h1>CREATE YOUR OWN GUEST LIST</h1>
+        <h2>ADD GUEST</h2>
+        <label>
+          First name
+          <input disabled="true" />
+        </label>
+        <label>
+          Last name
+          <input disabled="true" />
+        </label>
+        <div>Loading...</div>;
+      </>
+    );
   }
 
   return (
