@@ -105,8 +105,8 @@ export default function App() {
   return (
     <div className={styles.container} data-test-id="guest">
       <h1>CREATE YOUR OWN GUEST LIST</h1>
-      <h2>ADD GUEST</h2>
       <form onSubmit={handleSubmit} className={styles.formContainer}>
+        <h2>ADD GUEST</h2>
         <div className={styles.formRow}>
           <label className={styles.label}>
             First name
@@ -130,9 +130,9 @@ export default function App() {
       </form>
       <br />
       {guests.length > 0 && (
-        <div className={styles.guestListContainer}>
+        <div>
           <h2>Guest List</h2>
-          <div className={styles.guestList}>
+          <div className={styles.guestListContainer}>
             {guests.map((guest) => (
               <div
                 className={styles.listContainer}
