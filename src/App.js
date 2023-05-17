@@ -128,7 +128,7 @@ export default function App() {
               name="firstName"
               value={firstName}
               onChange={handleFirstNameChange}
-              disabled={loading}
+              disabled="false"
             />
           </label>
 
@@ -138,7 +138,7 @@ export default function App() {
               name="lastName"
               value={lastName}
               onChange={handleLastNameChange}
-              disabled={loading}
+              disabled="false"
             />
           </label>
         </div>
