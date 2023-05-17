@@ -105,11 +105,11 @@ export default function App() {
         <h2>ADD GUEST</h2>
         <label>
           First name
-          <input disabled="true" />
+          <input disabled />
         </label>
         <label>
           Last name
-          <input disabled="true" />
+          <input disabled />
         </label>
         <div>Loading...</div>;
       </>
@@ -128,7 +128,6 @@ export default function App() {
               name="firstName"
               value={firstName}
               onChange={handleFirstNameChange}
-              disabled="false"
             />
           </label>
 
@@ -138,7 +137,6 @@ export default function App() {
               name="lastName"
               value={lastName}
               onChange={handleLastNameChange}
-              disabled="false"
             />
           </label>
         </div>
